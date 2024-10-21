@@ -5,6 +5,10 @@ import jwt
 import datetime
 from functools import wraps
 
+client = MongoClient("mongodb://127.0.0.1:27017")
+db = client.bizDB #Selects the database
+businesses = db.biz #Selects the collection name
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'mysecret'
 
@@ -22,7 +26,7 @@ def login():
             app.config['SECRET_KEY'],
             algorithm="HS256"
         )
-        return make_response(jsonify({'token' : token}), 200)
+        return make_response(jsonify ({'token' : token}), 200)
     return make_response('Could not verify', 401, \
                         {
                             'WWW-Authenticate' : \
