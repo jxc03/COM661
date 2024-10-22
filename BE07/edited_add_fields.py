@@ -8,7 +8,7 @@ businesses = db.biz
 for business in businesses.find():
     businesses.update_one(
         {"_id" : business['_id'] },
-        {"$unset" : {"dummt" : ""} },
+        {"$unset" : {"dummy" : ""} },
         {
             "$set" : {
                 "num_employees" : random.randint(1, 100),
