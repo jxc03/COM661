@@ -5,7 +5,7 @@ from bson import ObjectId
 app = Flask(__name__)
 
 client = MongoClient("mongodb://127.0.0.1:27017")
-db = client.dizDB # Selects the database
+db = client.bizDB # Selects the database
 businesses = db.biz # Selects the collection
 
 '''
