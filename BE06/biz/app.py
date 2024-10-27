@@ -224,7 +224,7 @@ def fetch_one_review(bid, rid): #Defines function to fetch one review, takes bid
     
     # Queries the database to find the business by ID and its review by review ID
     business = businesses.find_one(  #Queries the database to find the business with the given ID and the review with the given ID
-    {"_id": ObjectId(id), "reviews._id": ObjectId(rid)},  #Matches both the business ID and the review ID
+    {"_id": ObjectId(bid), "reviews._id": ObjectId(rid)},  #Matches both the business ID and the review ID
     {"_id": 0, "reviews.$": 1}  #Shows only the matched review
     ) 
 
