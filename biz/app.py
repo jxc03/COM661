@@ -1,91 +1,12 @@
 from flask import Flask, request, jsonify, make_response
 from pymongo import MongoClient
 from bson import ObjectId
-import jwt
-import datetime
-from functools import wraps
-import bcrypt
-
-client = MongoClient("mongodb://127.0.0.1:27017")
-db = client.bizDB #Selects the database
-businesses = db.biz #Selects the collection name
-
-users = db.users
-blacklist = db.blacklist
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'mysecret'
 
-def jwt_required(func):
-    @wraps(func)
-    def jwt_required_wrapper(*args, **kwargs):
-        #token = request.args.get('token')
-        token = None
-        if 'x-access-token' in request.headers:
-            token = request.headers['x-access-token']
-
-        if not token:
-            return make_response(jsonify({'message' : 'Token is missing'}), 400)
-        
-        try:
-            data = jwt.decode(token, 
-                              app.config['SECRET_KEY'], 
-                              algorithms="HS256")
-        except:
-            return make_response(jsonify({'message' : 'Token is invalid'}), 401)
-        
-        bl_token = blacklist.find_one({"token" : token})
-        if bl_token is not None:
-            return make_response(jsonify({'message' : 'Token has been cancelled'}), 401)
-        return func(*args, **kwargs)
-
-    return jwt_required_wrapper
-
-def admin_required(func): 
-    @wraps(func)
-    def admin_required_wrapper(*args, **kwargs):
-        token = request.headers['x-access-token']
-        data = jwt.decode(token,
-                          app.config['SECRET_KEY'],
-                          algorithms="HS256")
-        if data['admin']:
-            return func(*args, **kwargs)
-        else:
-            return make_response(jsonify({'message' : 'Admin access required'}), 401)
-
-    return admin_required_wrapper
-
-@app.route('/api/v1.0/login', methods=['GET'])
-def login():
-    auth = request.authorization
-    
-    if auth:
-        user = users.find_one({'username' : auth.username})
-        if user is not None:
-            if bcrypt.checkpw(bytes(auth.password, 'UTF-8'),
-                                    user['password']):
-                token = jwt.encode(
-                    {
-                        'user' : auth.username,
-                        'admin' : user['admin'],
-                        'exp' : datetime.datetime.now(datetime.UTC) + datetime.timedelta(minutes=30) 
-                    },
-                    app.config['SECRET_KEY'],
-                    algorithm="HS256"
-                    )
-                return make_response(jsonify({'token' : token}), 200)
-            else:
-                return make_response(jsonify({'message' : 'Bad password'}),  401)
-        else:
-            return make_response(jsonify({'message' : 'Bad username'}),  401)
-    return make_response(jsonify({'message' : 'Authentication required'}), 401)
-
-@app.route('/api/v1.0/logout', methods=["GET"])
-@jwt_required
-def logout():
-    token = request.headers['x-access-token']
-    blacklist.insert_one({"token":token})
-    return make_response(jsonify({'message' : 'Logout successful'}), 200)
+client = MongoClient("mongodb://127.0.0.1:27017")
+db = client.bizDB # Selects the database
+businesses = db.biz # Selects the collection
 
 '''
 This function handles GET requests to fetch all business with pagination. It sets values for
@@ -171,9 +92,9 @@ def show_one_businesses(id): #Defines function to show one business which takes 
     else: #If business doesn't exists
         return make_response( jsonify ({"error" : "Invalid business ID"}), 404) #Returns an error message with a 404 status code 
 
+
 #Adds a new business
 @app.route("/api/v1.0/businesses", methods = ["POST"]) #Route to businesses, uses POST method to add new business
-@jwt_required
 def add_businesses(): #Defines function to add business
     #Checks if 'name', 'town', and 'rating' are provided in the form
     if  "name" in request.form and \
@@ -185,7 +106,7 @@ def add_businesses(): #Defines function to add business
             "name" : request.form["name"], #Assigns 'name' from form data
             "town" : request.form["town"], #Assigns 'town' from form data
             "rating" : request.form["rating"], #Assigns 'rating' from form data
-            "reviews" : [] #Initializes 'reviews' as an empty dictionary
+            "reviews" : {} #Initializes 'reviews' as an empty dictionary
         }
         
         #Inserts the new business into the 'businesses' collection
@@ -200,7 +121,6 @@ def add_businesses(): #Defines function to add business
 
 #Edits a business
 @app.route("/api/v1.0/businesses/<string:id>", methods = ["PUT"]) #Root route, for PUT method
-@jwt_required
 def edit_businesses(id): #Defines function, takes id as input
     if  "name" in request.form and \
         "town" in request.form and \
@@ -223,8 +143,6 @@ def edit_businesses(id): #Defines function, takes id as input
 
 #Deletes a business
 @app.route("/api/v1.0/businesses/<string:id>", methods = ["DELETE"]) #Root route, for DELETE method
-@jwt_required
-@admin_required
 def delete_businesses(id): #Defines function, takes id as input
     result = businesses.delete_one( {"_id" : ObjectId(id)} )
     if result.deleted_count == 1:
@@ -234,7 +152,6 @@ def delete_businesses(id): #Defines function, takes id as input
 
 #Adds a review
 @app.route("/api/v1.0/businesses/<string:id>/reviews", methods=["POST"]) #Route for adding a review to a business using POST method
-@jwt_required
 def add_new_review(id): #Defines function to add a new review, takes id as its parameter
     #Validates the business ID
     if not is_valid_objectid(id): #Checks if business ID is valid
@@ -258,9 +175,6 @@ def add_new_review(id): #Defines function to add a new review, takes id as its p
         "comment" : request.form["comment"], #Assigns the 'comment' from the form data
         "stars" : request.form["stars"] #Assigns the 'stars' from the form data
     }
-    # Ensures 'reviews' field exists as an array in the business document
-    if "reviews" not in business or not isinstance(business["reviews"], list):
-        businesses.update_one({"_id": ObjectId(id)}, {"$set": {"reviews": []}})
 
     #Updates the business document by pushing the new review into the 'reviews' array
     businesses.update_one( {"_id" : ObjectId(id)}, {"$push": {"reviews" : new_review}} ) #Adds the 
@@ -271,6 +185,7 @@ def add_new_review(id): #Defines function to add a new review, takes id as its p
     
     #Returns the URL of the new review with a 201 status code
     return make_response(jsonify ({ "url" : new_review_link }), 201) #Sends a response with the new review URL and a status code of 201
+
 
 #Gets all reviews for a specific business
 @app.route("/api/v1.0/businesses/<string:id>/reviews", methods=["GET"]) #Route for fetching all reviews for a specific business using GET method
@@ -309,7 +224,7 @@ def fetch_one_review(bid, rid): #Defines function to fetch one review, takes bid
     
     # Queries the database to find the business by ID and its review by review ID
     business = businesses.find_one(  #Queries the database to find the business with the given ID and the review with the given ID
-    {"_id": ObjectId(bid), "reviews._id": ObjectId(rid)},  #Matches both the business ID and the review ID
+    {"_id": ObjectId(id), "reviews._id": ObjectId(rid)},  #Matches both the business ID and the review ID
     {"_id": 0, "reviews.$": 1}  #Shows only the matched review
     ) 
 
@@ -325,7 +240,6 @@ def fetch_one_review(bid, rid): #Defines function to fetch one review, takes bid
 
 #Edits a review
 @app.route("/api/v1.0/businesses/<bid>/reviews/<rid>", methods=["PUT"])
-@jwt_required
 def edit_review(bid, rid):
     edited_review = {
         "reviews.$.username" : request.form["username"],
@@ -338,15 +252,13 @@ def edit_review(bid, rid):
         { "$set" : edited_review }
         )
 
-    edit_review_url = "http://localhost:2000/api/v1.0/businesses/" + \
+    edit_review_url = "http://localhost:5000/api/v1.0/businesses/" + \
         bid + "/reviews/" + rid
     
     return make_response(jsonify ({"url":edit_review_url}), 200)
 
 #Deletes a review
 @app.route("/api/v1.0/businesses/<bid>/reviews/<id>", methods=["DELETE"])
-@jwt_required
-@admin_required
 def delete_review(bid, rid): 
     businesses.update_one(
         {"_id" : ObjectId(bid)},
@@ -355,17 +267,5 @@ def delete_review(bid, rid):
     
     return make_response(jsonify ({}), 204)
 
-'''
-@app.route("/api/v1.0/fix_reviews_format", methods=["PUT"])
-def fix_reviews_format():
-    # Finds all businesses where reviews is a dictionary instead of a list
-    updated_count = businesses.update_many(
-        { "reviews": { "$type": "object" } },  # Finds docs where reviews is an object
-        { "$set": { "reviews": [] } }  # Sets reviews to an empty list
-    ).modified_count
-
-    return jsonify({"message": f"Updated {updated_count} businesses"}), 200
-'''
-
 if __name__ == "__main__":
-    app.run(debug=True, port = 2000)
+    app.run(debug = True, port = 2000)

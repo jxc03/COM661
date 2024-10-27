@@ -2,8 +2,8 @@ from pymongo import MongoClient
 import bcrypt
 
 client = MongoClient("mongodb://127.0.0.1:27017")
-db = client.bizDB      # select the database
-users = db.users        # select the collection name
+db = client.bizDB # Select the database
+users = db.users # Select the collection name
 
 user_list = [
           { 
