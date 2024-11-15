@@ -22,3 +22,38 @@
         <map-advanced-marker #markerElem = "mapAdvancedMarker" [position] = "{lat: location.lat, lng: location.lng}"></map-advanced-marker>
     }
 </google-map>
+
+<h1>Description</h1>
+{{ loremIpsum }}
+
+<h1>Weather</h1>
+Description: {{ weather }} <br>
+Temperature: {{ temperature }} <br>
+
+<svg height="100" width="100">
+    <g>
+        <circle [style.fill]="temperatureColour"cx="50" cy="50" r="50"></circle>
+        <text x="50%" y="50%" font-size="1.3em" text-anchor="middle" stroke="#000" stroke-width="1px" dy=".3em">
+            {{ temperature}}
+            <tspan dy="-10">o</tspan>
+            <tspan dy="10"> C</tspan>
+        </text>
+    </g>
+</svg>
+
+<!--
+    <div class = "container" style = "margin-top": 70px>
+    @for (business of business_list; track business.name) {
+        <div class = "row">
+            <div class = "col-sm-12">
+                <div class = "display-1">
+                    {{ business.name }} of {[ business.town ]}
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<img src="{{ weatherIconURL }}"><br>
+Current weather: {{ weather }}
+-->
