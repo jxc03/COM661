@@ -1,0 +1,27 @@
+<!-- boostrap card styling-->
+<div class = "container" style="margin-top: 70px;">
+    <div class = "row">
+        <div class = "col-sm-12">
+            @for (business of business_list; track business.name) {
+                <div class = "card text-white bg-primary mb-3"style = "cursor: pointer" [routerLink] = "['/businesses',business._id.$oid]">
+                    <div class = "card-header">{{ business.name }}</div>
+                    <div class = "card-body">This business is based in {{ business.town }}</div>
+                    <div class = "card-footer">Rating: {{ business.rating }}</div>
+                </div>
+            }
+        </div> <!-- col -->
+    </div> <!-- row -->
+    <!-- bootstrap previous and next button styling-->
+    <div class = "row">
+        <div class = "col-sm-4">
+            <button class = "btn btn-primary" (click) = "previousPage()">Previous</button>
+        </div>
+        <div class = " col-sm-4 text-center align-self-center">
+            Showing page {{ this.page }} of {{ this.dataService.getLastPageNumber() }}
+        </div>
+        <div class = "col-sm-4 text-end">
+            <button class = "btn btn-primary" (click) = "nextPage()">Next</button>
+        </div>
+    </div> <!-- row -->
+</div> <!-- container -->
+

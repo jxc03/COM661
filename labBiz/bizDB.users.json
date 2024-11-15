@@ -1,0 +1,75 @@
+[{
+  "_id": {
+    "$oid": "671d2c68f6432a9e345e356d"
+  },
+  "name": "Homer Simpson",
+  "username": "homer",
+  "password": {
+    "$binary": {
+      "base64": "JDJiJDEyJFAxbUZxaEVxU0g0NXRpbUN3dTRTSnVSN2JiejdRbzZjTlZ0eGVhVXRzTzZCZFptNmJRNTRh",
+      "subType": "00"
+    }
+  },
+  "email": "homer@springfield.net",
+  "admin": false
+},
+{
+  "_id": {
+    "$oid": "671d2c68f6432a9e345e356e"
+  },
+  "name": "Marge Simpson",
+  "username": "marge",
+  "password": {
+    "$binary": {
+      "base64": "JDJiJDEyJDVLRE1rakVvLmdONy4vN0p3blh4UXVMWWtKNXFpZVNsUWZCcDBncXI1dzJjTUVqeEVOTTg2",
+      "subType": "00"
+    }
+  },
+  "email": "marge@springfield.net",
+  "admin": false
+},
+{
+  "_id": {
+    "$oid": "671d2c68f6432a9e345e356f"
+  },
+  "name": "Bart Simpson",
+  "username": "bart",
+  "password": {
+    "$binary": {
+      "base64": "JDJiJDEyJGY5NTFJcGtlYkVkeVMuMzFlY2VqcC54VW9CWXRReUE5TjFVcmxrNnJTNVFUbE5iUmRmNlJ1",
+      "subType": "00"
+    }
+  },
+  "email": "bart@springfield.net",
+  "admin": false
+},
+{
+  "_id": {
+    "$oid": "671d2c68f6432a9e345e3570"
+  },
+  "name": "Lisa Simpson",
+  "username": "lisa",
+  "password": {
+    "$binary": {
+      "base64": "JDJiJDEyJEI1MmVXc0gzSXAva2FaeHg5bDZVWk9pY3RieUlEcnNNN2JVcEpnaWExdDlkSS5JQkNpT202",
+      "subType": "00"
+    }
+  },
+  "email": "lisa@springfield.net",
+  "admin": true
+},
+{
+  "_id": {
+    "$oid": "671d2c68f6432a9e345e3571"
+  },
+  "name": "Maggie Simpson",
+  "username": "maggie",
+  "password": {
+    "$binary": {
+      "base64": "JDJiJDEyJDFBQ2ZFN2xEZEhqNHpZT3FyT1Zpd09vazUuRkZTSGxKN3lxQUwzVjY4R2RaajkyWEhoT24y",
+      "subType": "00"
+    }
+  },
+  "email": "maggie@springfield.net",
+  "admin": false
+}]
