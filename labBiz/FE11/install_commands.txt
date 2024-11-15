@@ -1,5 +1,0 @@
-Install angular:
-npm install –g @angular/cli
-
-Install bootstrap:
-npm install bootstrap jquery --save

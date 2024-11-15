@@ -1,0 +1,24 @@
+<div class="container" style="margin-top: 70px;">
+    <div class="row">
+        <div class="col-sm-12">
+            @for(business of business_list; track business.name) {
+                <div class="card text-white bg-primary mb-3">
+                    <div class="card-header">{{ business.name }}</div>
+                    <div class="card-body">This business is based in {{ business.town }}</div>
+                    <div class="card-footer">
+                        <span *ngFor = "let star of [].constructor(business.rating)">
+                            <img src = "/images/star.png" alt= "star image" style = "width:30px; height:30px;">
+                            <!--Rating: {{ business.rating }}-->
+                        </span>
+                    </div>
+                </div>
+            }
+        </div> <!-- col -->
+    </div> <!-- row -->
+</div> <!-- container -->
+
+<google-map height = "400px" width = "400px" [options] = "map_options">
+    @for (location of map_locations; track location) {
+        <map-advanced-marker #markerElem = "mapAdvancedMarker" [position] = "{lat: location.lat, lng: location.lng}"></map-advanced-marker>
+    }
+</google-map>

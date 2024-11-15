@@ -1,0 +1,10 @@
+Install angular:
+npm install –g @angular/cli
+
+Install bootstrap:
+npm install bootstrap jquery --save
+
+Use Google Maps:
+npm install @angular/google-maps
+npm install @angular/google-maps --save
+
