@@ -4,11 +4,12 @@ import { DataService } from './data.service';
 import { CommonModule} from '@angular/common';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { subscribe } from 'diagnostics_channel';
+import { ReactiveFormsModule} from '@angular/forms'
 
 @Component({
   selector: 'business',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, GoogleMapsModule],
+  imports: [RouterOutlet, CommonModule, GoogleMapsModule, ReactiveFormsModule],
   providers: [DataService],
   templateUrl: './business.component.html',
   styleUrl: './business.component.css'
@@ -34,6 +35,8 @@ export class BusinessComponent {
     this.business_list = this.dataService.getBusiness(
                             this.route.snapshot.paramMap.get('id')
                           );
+    console.log(this.business_list[0]['reviews']);
+                          
     /*this.business_lat = this.business_list[0].location.coordinates[0];*/
     /*this.business_lng = this.business_list[0].location.coordinates[1];*/
     /* this.map_locations.push({

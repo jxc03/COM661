@@ -5,7 +5,13 @@
   "name": "Biz 0",
   "town": "Lisburn",
   "rating": 2,
-  "reviews": [],
+  "reviews": [
+    {
+      "username": "User 999",
+      "comment": "Lorem ipsum",
+      "stars": 3
+    }
+  ],
   "num_employees": 82,
   "profit": [
     {

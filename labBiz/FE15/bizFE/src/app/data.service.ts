@@ -49,4 +49,26 @@ export class DataService {
         else if (temp <= 25) return "#ff7f00";
         else return "#ff0000"
     }
+    populateReviews() {
+        let loremIpsum = <string>"";
+        let dummyReview = <any>{};
+
+        this.getLoremIpsum(1).subscribe((response: any) => {
+            loremIpsum = response.text;
+            jsonData.forEach(function(business) {
+                let numReviews = Math.floor(Math.random() * 10);
+                for (var i = 0; i <numReviews; i++) {
+                    let textSize = Math.floor(Math.random() * 290 + 10);
+                    let textStart = Math.floor(Math.random() * (loremIpsum.length - textSize));
+
+                    dummyReview = {
+                        'username': 'User' + Math.floor(Math.random() * 9999 + 1),
+                        'comment': loremIpsum.slice(textStart, textStart + textSize),
+                        'stars': Math.floor(Math.random() * 5) + 1
+                    };
+                    business['reviews'].push(dummyReview);
+                }
+            })
+        })
+    }   
 }
