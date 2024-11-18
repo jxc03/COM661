@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@angular/google-maps": "^18.2.13",
     "bootstrap": "^5.3.3",
     "jquery": "^3.7.1"
   }
