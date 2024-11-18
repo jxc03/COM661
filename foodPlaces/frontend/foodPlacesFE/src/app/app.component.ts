@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import jsonData from '../assets/data/foodPlacesDB.foodPlaces.json'
+
 
 @Component({
   selector: 'app-root',
@@ -10,4 +12,7 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'foodPlacesFE';
+  ngOnInit() {
+    console.log(jsonData);
+  }
 }
