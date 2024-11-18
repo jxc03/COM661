@@ -1,0 +1,9 @@
+pip install flask
+pip install pymongo
+pip install bson
+pip install pyjwt
+pip install bcrypt
+pip install blueprint
+pip install email-validator
+pip install pytest
+pip install pytest-cov
