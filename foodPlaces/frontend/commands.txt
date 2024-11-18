@@ -1,2 +1,8 @@
-Install angular:
+Angular:
 npm install -g @angular/cli
+
+Virtual environment:
+python -m venv venv
+
+Bootstrap:
+install bootstrap jquery --save
