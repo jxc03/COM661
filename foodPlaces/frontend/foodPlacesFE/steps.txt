@@ -1,0 +1,2 @@
+JSON file:
+https://www.thirdrocktechkno.com/blog/how-to-read-local-json-files-in-angular/
