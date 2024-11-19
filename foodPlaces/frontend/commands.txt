@@ -5,4 +5,7 @@ Virtual environment:
 python -m venv venv
 
 Bootstrap:
-install bootstrap jquery --save
+npm install bootstrap jquery --save
+
+Starting back up:
+npm install
