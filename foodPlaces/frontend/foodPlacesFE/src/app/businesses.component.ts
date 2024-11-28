@@ -13,7 +13,9 @@ import { DataService } from './data.service';
 
 export class BusinessesComponent {
     business_list: any;
+    
     constructor(private dataService: DataService) { }
+    
     ngOnInit() {
     this.business_list = this.dataService.getBusinesses();
     }

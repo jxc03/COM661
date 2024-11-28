@@ -1,7 +1,28 @@
-@for (business of business_list; track business.name) {
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            @for(business of business_list; track business.info.name) {
+                <div class="card text-white bg-primary mb-3">
+                    <div class="card-header">
+                        {{ business.info?.name }}
+                    </div>
+                    <div class="card-body">
+                        This business is based in {{ business.town }}
+                    </div>
+                    <div class="card-footer">
+                        Rating: {{ business.rating }}
+                    </div>
+                </div>
+            }
+    </div> <!-- row -->
+</div> <!-- container -->
+
+    <!--
+    @for (business of business_list; track business.name) {
     <p>
     Name: {{ business.name }} <br>
     Town: {{ business.town }} <br>
     Rating: {{ business.rating }}
     </p>
-}
+    }
+    -->

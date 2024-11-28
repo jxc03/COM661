@@ -1,4 +1,4 @@
-import jsonData from '../assets/data/foodPlacesDB.foodPlaces.json'
+import jsonData from '../assets/data/foodPlaces.json'
 
 export class DataService {
     getBusinesses() {
