@@ -11,7 +11,7 @@ import { DataService } from './data.service';
     styleUrl: './business.component.css'
 })
 export class BusinessComponent {
-    business_list: any;
+    business_list: any[] = [];
     
     constructor(public dataService: DataService, 
         private route: ActivatedRoute) {}
@@ -19,5 +19,5 @@ export class BusinessComponent {
     ngOnInit() {
         this.business_list = this.dataService.getBusiness(
                              this.route.snapshot.paramMap.get('id'));
-}
+    }
 }
