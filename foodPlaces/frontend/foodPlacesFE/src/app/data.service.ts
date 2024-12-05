@@ -38,5 +38,37 @@ export class DataService {
         const data: any[] = jsonData as any[];
         return Math.ceil(data.length / this.pageSize);
     }
+    /*
+    getBusiness(id: any) {
+        const data: any[] = jsonData as any[];
+        let dataToReturn: any[] = [];
+        data.forEach(function(business) {
+            if (business['_id']['$oid'] == id) {
+                dataToReturn.push(business);
+            }
+        });
+        return dataToReturn;
+    }
+    */
+    getBusiness(id: any) {
+        const data: any[] = jsonData as any[];
+        let dataToReturn: any[] = [];
+        
+        data.forEach(function(business) {
+            // Check business ID
+            if (business['_id']['$oid'] === id) {
+                dataToReturn.push(business);
+            }
+            // Check places IDs
+            else if (business.places) {
+                business.places.forEach((place: any) => {
+                    if (place['_id']['$oid'] === id) {
+                        dataToReturn.push(business);
+                    }
+                });
+            }
+        });
+        return dataToReturn;
+    }
 }
  

@@ -1,0 +1,21 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            @for(business of business_list; track business._id) {
+                @for(place of business.places; track place._id) {
+                    <div class="card text-white bg-primary mb-3">
+                        <div class="card-header">
+                            {{ place.info.name }}
+                        </div>
+                        <div class="card-body">
+                            This business is based in {{ business.city_name }}
+                        </div>
+                        <div class="card-footer">
+                            Rating: {{ place.ratings?.average_rating }}
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
