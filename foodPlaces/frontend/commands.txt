@@ -9,3 +9,6 @@ npm install bootstrap jquery --save
 
 Starting back up:
 npm install
+
+Auth0
+npm install @auth0/auth0-angular --save
